@@ -1,5 +1,6 @@
 package br.com.zupacademy.saulo.casadocodigo.autor.entidade;
 
+import br.com.zupacademy.saulo.casadocodigo.autor.advice.AutorException;
 import br.com.zupacademy.saulo.casadocodigo.autor.repositorio.RepositoryAutorJPA;
 import com.sun.istack.NotNull;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Entity
@@ -17,10 +19,13 @@ public class Autor {
     private static final String EMAIL_REGEX_ISO = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
     private static final Pattern pattern = Pattern.compile(EMAIL_REGEX_ISO);
 
-    public static boolean validarEmail(final String email){
+    public static boolean validarFormatoEmail(final String email){
         if(email.trim().equals("")) return false;
         return pattern.matcher(email).find();
     }
+
+    @Deprecated
+    public Autor(){}
 
     public Autor(final String nome, final String email, final String descricao){
         this.nome = nome;
@@ -51,7 +56,13 @@ public class Autor {
     private LocalDateTime dataDeCriacao = LocalDateTime.now();
 
     public Autor cadastrar(final RepositoryAutorJPA repositoryAutorJPA){
+        verifyIfExistsDuplicatedEmail(repositoryAutorJPA)
+                .ifPresent(e->{throw new AutorException("Não é possivel salvar autores com mesmo email!");});
         return repositoryAutorJPA.save(this);
+    }
+
+    private Optional<Autor> verifyIfExistsDuplicatedEmail(RepositoryAutorJPA repositoryAutorJPA){
+        return repositoryAutorJPA.findFirstAutorByEmail(email);
     }
 
     public String getNome() {

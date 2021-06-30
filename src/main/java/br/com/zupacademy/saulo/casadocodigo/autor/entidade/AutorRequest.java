@@ -11,7 +11,7 @@ public class AutorRequest {
     private String descricao;
 
     public AutorResponse cadastrar(final RepositoryAutorJPA repositoryAutorJPA) {
-        if(!Autor.validarEmail(email)) throw new IllegalArgumentException();
+        if(!Autor.validarFormatoEmail(email)) throw new IllegalArgumentException();
         return new AutorResponse(
                 new Autor(nome, email, descricao).cadastrar(repositoryAutorJPA)
         );

@@ -23,4 +23,11 @@ public class Advice {
     public AutorResponseErro dadosDoAutorInvalidos(MethodArgumentNotValidException e){
         return new AutorResponseErro(e.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
+
+    //Tratar validação duplicata email
+    @ExceptionHandler({AutorException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public AutorResponseErro emailDuplicado(AutorException e){
+        return new AutorResponseErro(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+    }
 }
