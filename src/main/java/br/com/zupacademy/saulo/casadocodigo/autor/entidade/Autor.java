@@ -50,7 +50,7 @@ public class Autor {
 
     private LocalDateTime dataDeCriacao = LocalDateTime.now();
 
-    public Autor cadastrar(RepositoryAutorJPA repositoryAutorJPA){
+    public Autor cadastrar(final RepositoryAutorJPA repositoryAutorJPA){
         return repositoryAutorJPA.save(this);
     }
 
@@ -65,4 +65,5 @@ public class Autor {
     public String getDescricao() {
         return descricao;
     }
+
 }

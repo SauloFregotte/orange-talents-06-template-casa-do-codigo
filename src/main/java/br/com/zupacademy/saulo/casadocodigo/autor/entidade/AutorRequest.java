@@ -10,7 +10,7 @@ public class AutorRequest {
 
     private String descricao;
 
-    public AutorResponse cadastrar(RepositoryAutorJPA repositoryAutorJPA) {
+    public AutorResponse cadastrar(final RepositoryAutorJPA repositoryAutorJPA) {
         if(!Autor.validarEmail(email)) throw new IllegalArgumentException();
         return new AutorResponse(
                 new Autor(nome, email, descricao).cadastrar(repositoryAutorJPA)
@@ -27,14 +27,5 @@ public class AutorRequest {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    @Override
-    public String toString() {
-        return "AutorRequest{" +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", descricao='" + descricao + '\'' +
-                '}';
     }
 }

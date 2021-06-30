@@ -19,9 +19,7 @@ public class AutorController {
 
     @PostMapping(path = "/cadastrar-autor")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody AutorResponse cadastrarAutor(@RequestBody @Valid AutorRequest autorRequest){
-        System.out.println(autorRequest.toString());
-
+    public @ResponseBody AutorResponse cadastrarAutor(@RequestBody @Valid final AutorRequest autorRequest){
         return autorRequest.cadastrar(repositoryAutorJPA);
     }
 }
