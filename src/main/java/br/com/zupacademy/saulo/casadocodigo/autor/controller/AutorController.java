@@ -1,8 +1,9 @@
 package br.com.zupacademy.saulo.casadocodigo.autor.controller;
 
+import br.com.zupacademy.saulo.casadocodigo.autor.entidade.Autor;
 import br.com.zupacademy.saulo.casadocodigo.autor.entidade.AutorRequest;
 import br.com.zupacademy.saulo.casadocodigo.autor.entidade.AutorResponse;
-import br.com.zupacademy.saulo.casadocodigo.autor.repositorio.RepositoryAutorJPA;
+import br.com.zupacademy.saulo.casadocodigo.autor.repository.RepositoryAutorJPA;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

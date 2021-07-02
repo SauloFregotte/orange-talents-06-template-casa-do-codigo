@@ -1,6 +1,6 @@
 package br.com.zupacademy.saulo.casadocodigo.autor.entidade;
 
-import br.com.zupacademy.saulo.casadocodigo.autor.repositorio.RepositoryAutorJPA;
+import br.com.zupacademy.saulo.casadocodigo.autor.repository.RepositoryAutorJPA;
 
 public class AutorRequest {
 

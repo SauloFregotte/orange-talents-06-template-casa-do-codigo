@@ -1,7 +1,8 @@
 package br.com.zupacademy.saulo.casadocodigo.autor.entidade;
 
-import br.com.zupacademy.saulo.casadocodigo.autor.advice.AutorException;
-import br.com.zupacademy.saulo.casadocodigo.autor.repositorio.RepositoryAutorJPA;
+//import br.com.zupacademy.saulo.casadocodigo.autor.advice.AutorException;
+import br.com.zupacademy.saulo.casadocodigo.autor.repository.RepositoryAutorJPA;
+import br.com.zupacademy.saulo.casadocodigo.validator.UniqueValue;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -23,9 +24,7 @@ public class Autor {
         if(email.trim().equals("")) return false;
         return pattern.matcher(email).find();
     }
-
-    @Deprecated
-    public Autor(){}
+    private Autor(){}
 
     public Autor(final String nome, final String email, final String descricao){
         this.nome = nome;
@@ -47,6 +46,7 @@ public class Autor {
     @NotNull
     @NotBlank
     @NotEmpty
+    @UniqueValue(domainClass = Autor.class, fieldName="email")
     private String email;
 
     @NotNull
@@ -56,14 +56,14 @@ public class Autor {
     private LocalDateTime dataDeCriacao = LocalDateTime.now();
 
     public Autor cadastrar(final RepositoryAutorJPA repositoryAutorJPA){
-        verifyIfExistsDuplicatedEmail(repositoryAutorJPA)
-                .ifPresent(e->{throw new AutorException("Não é possivel salvar autores com mesmo email!");});
+//        verifyIfExistsDuplicatedEmail(repositoryAutorJPA)
+//                .ifPresent(e->{throw new AutorException("Não é possivel salvar autores com mesmo email!");});
         return repositoryAutorJPA.save(this);
     }
 
-    private Optional<Autor> verifyIfExistsDuplicatedEmail(RepositoryAutorJPA repositoryAutorJPA){
-        return repositoryAutorJPA.findFirstAutorByEmail(email);
-    }
+//    private Optional<Autor> verifyIfExistsDuplicatedEmail(RepositoryAutorJPA repositoryAutorJPA){
+//        return repositoryAutorJPA.findFirstAutorByEmail(email);
+//    }
 
     public String getNome() {
         return nome;
