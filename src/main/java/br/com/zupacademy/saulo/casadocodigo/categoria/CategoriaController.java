@@ -1,8 +1,7 @@
-package br.com.zupacademy.saulo.casadocodigo.categoria.controller;
+package br.com.zupacademy.saulo.casadocodigo.categoria;
 
 import br.com.zupacademy.saulo.casadocodigo.categoria.entidade.CategoriaRequest;
 import br.com.zupacademy.saulo.casadocodigo.categoria.entidade.CategoriaResponse;
-import br.com.zupacademy.saulo.casadocodigo.categoria.repository.RepositoryCategoriaJPA;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

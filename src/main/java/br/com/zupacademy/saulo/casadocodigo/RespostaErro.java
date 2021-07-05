@@ -1,11 +1,11 @@
-package br.com.zupacademy.saulo.casadocodigo.autor.entidade;
+package br.com.zupacademy.saulo.casadocodigo;
 
-public class AutorResponseErro {
+public class RespostaErro {
 
     private String mensagem;
     private int status;
 
-    public AutorResponseErro(String mensagem, int status) {
+    public RespostaErro(String mensagem, int status) {
         this.mensagem = mensagem;
         this.status = status;
     }
@@ -17,4 +17,6 @@ public class AutorResponseErro {
     public int getStatus() {
         return status;
     }
+
+
 }

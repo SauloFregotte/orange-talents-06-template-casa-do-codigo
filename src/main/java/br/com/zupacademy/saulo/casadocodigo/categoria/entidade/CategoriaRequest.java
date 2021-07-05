@@ -1,6 +1,6 @@
 package br.com.zupacademy.saulo.casadocodigo.categoria.entidade;
 
-import br.com.zupacademy.saulo.casadocodigo.categoria.repository.RepositoryCategoriaJPA;
+import br.com.zupacademy.saulo.casadocodigo.categoria.RepositoryCategoriaJPA;
 
 public class CategoriaRequest {
 

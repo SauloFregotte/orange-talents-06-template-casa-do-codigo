@@ -1,4 +1,4 @@
-package br.com.zupacademy.saulo.casadocodigo.validator;
+/*package br.com.zupacademy.saulo.casadocodigo.validator;
 
 import org.springframework.util.Assert;
 
@@ -9,10 +9,14 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
+Problema onde o não consegui transformar minha classe em um Bean gerenciado pelo Spring
+assim não conseguindo injetar o EntityManager corretamente.
+
 public class Validator implements ConstraintValidator<UniqueValue, Object> {
 
     private String domainAttribute;
     private Class<?> klazz;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -36,3 +40,4 @@ public class Validator implements ConstraintValidator<UniqueValue, Object> {
         return list.isEmpty();
     }
 }
+*/
