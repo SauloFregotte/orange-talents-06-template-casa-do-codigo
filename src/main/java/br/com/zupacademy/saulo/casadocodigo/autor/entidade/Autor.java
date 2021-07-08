@@ -3,6 +3,7 @@ package br.com.zupacademy.saulo.casadocodigo.autor.entidade;
 //import br.com.zupacademy.saulo.casadocodigo.validator.UniqueValue;
 import br.com.zupacademy.saulo.casadocodigo.EntityException;
 import br.com.zupacademy.saulo.casadocodigo.autor.RepositoryAutorJPA;
+import br.com.zupacademy.saulo.casadocodigo.livro.entidade.Livro;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -25,6 +27,10 @@ public class Autor {
         return pattern.matcher(email).find();
     }
     private Autor(){}
+
+    public Autor(final String nome){
+        this.nome = nome;
+    }
 
     public Autor(final String nome, final String email, final String descricao){
         this.nome = nome;
@@ -51,6 +57,9 @@ public class Autor {
     @Size(max = 400)
     private String descricao;
 
+    @OneToMany(mappedBy = "autor")
+    private List<Livro> livros;
+
     private LocalDateTime dataDeCriacao = LocalDateTime.now();
 
     public Autor cadastrar(final RepositoryAutorJPA repositoryAutorJPA){
@@ -61,6 +70,11 @@ public class Autor {
 
     private Optional<Autor> verifyIfExistsDuplicatedEmail(RepositoryAutorJPA repositoryAutorJPA){
         return repositoryAutorJPA.findFirstAutorByEmail(email);
+    }
+
+    public Autor verifyIfAutorExists(RepositoryAutorJPA repositoryAutorJPA) {
+        return repositoryAutorJPA.findAutorByNome(nome)
+                .orElseThrow(() -> {throw new IllegalArgumentException();});
     }
 
     public String getNome() {
@@ -74,5 +88,4 @@ public class Autor {
     public String getDescricao() {
         return descricao;
     }
-
 }

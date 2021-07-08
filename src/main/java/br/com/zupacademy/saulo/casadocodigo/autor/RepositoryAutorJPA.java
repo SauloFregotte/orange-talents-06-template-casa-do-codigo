@@ -9,4 +9,5 @@ public interface RepositoryAutorJPA extends JpaRepository<Autor, Long> {
 
     Optional<Autor> findFirstAutorByEmail(String email);
 
+    Optional<Autor> findAutorByNome(String nome);
 }
