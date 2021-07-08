@@ -44,8 +44,8 @@ public class LivroController {
 
     @GetMapping(path = "/mostra-livro-detalhe/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Livro mostraDetalhesLivro(@PathVariable Long id ){
-        return new Livro().getLivroById(repositoryLivroJPA, id);
+    public LivroResponse mostraDetalhesLivro(@PathVariable Long id ){
+        return new LivroResponse(new Livro().findLivroById(repositoryLivroJPA, id));
     }
 
 }

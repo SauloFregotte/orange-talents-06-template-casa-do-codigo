@@ -92,11 +92,9 @@ public class Livro {
                 .map(livro-> new LivroResponseIdTitulo(livro.id, livro.titulo)).collect(Collectors.toList());
     }
 
-    public Livro getLivroById(final RepositoryLivroJPA repositoryLivroJPA, final Long id) {
-        //Estou fazendo uma busca por Id sem saber se o Id esta valido, faça a verificação
-        return repositoryLivroJPA.getById(id);
-        //if (!livro.equals("[]")) return livro;
-        //else throw new InvalidParameterException("Esse livro não existe ou não está cadastrado!");
+    public Livro findLivroById(final RepositoryLivroJPA repositoryLivroJPA, final Long id) {
+        return repositoryLivroJPA.findById(id)
+                .orElseThrow(() -> {throw new InvalidParameterException("Esse livro não existe ou não está cadastrado!");});
     }
 
     private Optional<Livro> verifyIfExistsDuplicatedTitle(final RepositoryLivroJPA repositoryLivroJPA) {

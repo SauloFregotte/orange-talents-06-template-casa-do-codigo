@@ -1,5 +1,8 @@
 package br.com.zupacademy.saulo.casadocodigo.livro.entidade;
 
+import br.com.zupacademy.saulo.casadocodigo.autor.entidade.Autor;
+import br.com.zupacademy.saulo.casadocodigo.categoria.entidade.Categoria;
+
 import java.time.LocalDateTime;
 
 public class LivroResponse {
@@ -13,8 +16,8 @@ public class LivroResponse {
         numero_paginas = livro.getNumero_paginas();
         isbn = livro.getIsbn();
         data_de_publicacao = livro.getData_de_publicacao();
-        categoria = livro.getCategoria().getNome();
-        autor = livro.getAutor().getNome();
+        categoria = livro.getCategoria();
+        autor = livro.getAutor();
     }
 
     private Long id;
@@ -26,8 +29,8 @@ public class LivroResponse {
     private String isbn;
     private LocalDateTime data_de_publicacao;
 
-    private String categoria;
-    private String autor;
+    private Categoria categoria;
+    private Autor autor;
 
     public Long getId() {
         return id;
@@ -61,11 +64,11 @@ public class LivroResponse {
         return data_de_publicacao;
     }
 
-    public String getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public String getAutor() {
+    public Autor getAutor() {
         return autor;
     }
 }
