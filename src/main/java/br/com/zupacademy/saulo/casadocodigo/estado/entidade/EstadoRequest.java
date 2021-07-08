@@ -9,13 +9,14 @@ public class EstadoRequest {
     private String nome;
     private String pais;
 
-    public EstadoResponse cadastrar(final RepositorioEstadoJPA repositorioEstadoJPA, RepositorioPaisJPA repositorioPaisJPA){
+    public EstadoResponse cadastrar(final RepositorioEstadoJPA repositorioEstadoJPA, final RepositorioPaisJPA repositorioPaisJPA){
         return new EstadoResponse(
-                new Estado(nome, obtainCountry(repositorioPaisJPA)).cadastrar(repositorioEstadoJPA)
+                new Estado(nome, obtainCountry(repositorioPaisJPA))
+                        .cadastrar(repositorioEstadoJPA)
         );
     }
 
-    public Pais obtainCountry(RepositorioPaisJPA repositorioPaisJPA) {
+    private Pais obtainCountry(RepositorioPaisJPA repositorioPaisJPA) {
         return Pais.verifyIfPaisExists(repositorioPaisJPA, pais);
     }
 

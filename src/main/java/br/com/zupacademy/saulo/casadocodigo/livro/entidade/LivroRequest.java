@@ -39,11 +39,11 @@ public class LivroRequest {
     }
 
     public Categoria verifyIfCategoriaExits(RepositoryCategoriaJPA repositoryCategoriaJPA) {
-        return new Categoria(categoria).verifyIfCategoriaExists(repositoryCategoriaJPA);
+        return Categoria.verifyIfCategoriaExists(repositoryCategoriaJPA, categoria);
     }
 
     public Autor verifyIfAutorExists(RepositoryAutorJPA repositoryAutorJPA) {
-        return new Autor(autor).verifyIfAutorExists(repositoryAutorJPA);
+        return Autor.verifyIfAutorExists(repositoryAutorJPA, autor);
     }
 
     public void setTitulo(String titulo) {

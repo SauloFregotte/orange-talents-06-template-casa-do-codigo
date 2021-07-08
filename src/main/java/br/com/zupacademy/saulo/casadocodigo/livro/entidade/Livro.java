@@ -79,17 +79,16 @@ public class Livro {
 
     public Livro cadastrar(final RepositoryLivroJPA repositoryLivroJPA){
         verifyPublicationDate();
-        verifyIfExistsDuplicatedTitle(repositoryLivroJPA)
-                .ifPresent(e->{throw new EntityException("Titulo already exists!");});
-        verifyIfExistsDuplicatedISBN(repositoryLivroJPA)
-                .ifPresent(e->{throw new EntityException("Livro already exists!");});
+        verifyIfExistsDuplicatedTitle(repositoryLivroJPA);
+        verifyIfExistsDuplicatedISBN(repositoryLivroJPA);
         return repositoryLivroJPA.save(this);
     }
 
     public List<Object> selectAllLivrosOnlyIdAndTitulo(final RepositoryLivroJPA repositoryLivroJPA){
         return repositoryLivroJPA.findAll()
                 .stream()
-                .map(livro-> new LivroResponseIdTitulo(livro.id, livro.titulo)).collect(Collectors.toList());
+                .map(livro-> new LivroResponseIdTitulo(livro.id, livro.titulo))
+                .collect(Collectors.toList());
     }
 
     public Livro findLivroById(final RepositoryLivroJPA repositoryLivroJPA, final Long id) {
@@ -97,12 +96,14 @@ public class Livro {
                 .orElseThrow(() -> {throw new InvalidParameterException("Esse livro não existe ou não está cadastrado!");});
     }
 
-    private Optional<Livro> verifyIfExistsDuplicatedTitle(final RepositoryLivroJPA repositoryLivroJPA) {
-        return repositoryLivroJPA.findFirstLivroByTitulo(titulo);
+    private void verifyIfExistsDuplicatedTitle(final RepositoryLivroJPA repositoryLivroJPA) {
+        repositoryLivroJPA.findFirstLivroByTitulo(titulo)
+                .ifPresent(e->{throw new EntityExistsException("Titulo already exists!");});
     }
 
-    private Optional<Livro> verifyIfExistsDuplicatedISBN(final RepositoryLivroJPA repositoryLivroJPA) {
-        return repositoryLivroJPA.findFirstLivroByIsbn(isbn);
+    private void verifyIfExistsDuplicatedISBN(final RepositoryLivroJPA repositoryLivroJPA) {
+        repositoryLivroJPA.findFirstLivroByIsbn(isbn)
+                .ifPresent(e->{throw new EntityExistsException("Livro already exists!");});
     }
 
     private void verifyPublicationDate(){

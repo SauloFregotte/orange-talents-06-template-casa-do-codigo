@@ -1,6 +1,7 @@
 package br.com.zupacademy.saulo.casadocodigo.pais.entidade;
 
 import br.com.zupacademy.saulo.casadocodigo.EntityException;
+import br.com.zupacademy.saulo.casadocodigo.cliente.entidade.Cliente;
 import br.com.zupacademy.saulo.casadocodigo.estado.entidade.Estado;
 import br.com.zupacademy.saulo.casadocodigo.estado.entidade.EstadoRequest;
 import br.com.zupacademy.saulo.casadocodigo.pais.RepositorioPaisJPA;
@@ -10,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 public class Pais {
@@ -33,8 +33,11 @@ public class Pais {
     @OneToMany(mappedBy = "pais")
     private List<Estado> estado;
 
-    public static Pais verifyIfPaisExists(final RepositorioPaisJPA repositorioPaisJPA, final String nome){
-        return repositorioPaisJPA.findByNome(nome)
+    @OneToOne(mappedBy = "pais")
+    private Cliente cliente;
+
+    public static Pais verifyIfPaisExists(final RepositorioPaisJPA repositorioPaisJPA, final String nomePais){
+        return repositorioPaisJPA.findByNome(nomePais)
                 .orElseThrow(()->{throw new EntityException("País não cadastrado!");});
     }
 
@@ -45,7 +48,7 @@ public class Pais {
 
     private void verifyUniqueCountry(RepositorioPaisJPA repositorioPaisJPA){
         repositorioPaisJPA.findByNome(nome)
-                .ifPresent(e->{throw new EntityException("País já cadastrado!");});
+                .ifPresent(e->{throw new EntityExistsException("País já cadastrado!");});
     }
 
     public Long getId() {

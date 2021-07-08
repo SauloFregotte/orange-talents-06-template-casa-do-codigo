@@ -15,6 +15,11 @@ import java.util.Optional;
 @Entity
 public class Categoria {
 
+    public static Categoria verifyIfCategoriaExists(RepositoryCategoriaJPA repositoryCategoriaJPA, final String nome) {
+        return repositoryCategoriaJPA.findFirstCategoriaByNome(nome)
+                .orElseThrow(() -> {throw new IllegalArgumentException("Categoria não existe!");});
+    }
+
     private Categoria(){}
 
     public Categoria(String nome) {
@@ -35,18 +40,13 @@ public class Categoria {
     private List<Livro> livros;
 
     public Categoria cadastrar(RepositoryCategoriaJPA repositoryCategoriaJPA) {
-        verifyIfExistsDuplicatedName(repositoryCategoriaJPA)
-                .ifPresent(e->{throw new EntityException("Categoria already exists!");});
+        verifyIfExistsDuplicatedName(repositoryCategoriaJPA);
         return repositoryCategoriaJPA.save(this);
     }
 
-    private Optional<Categoria> verifyIfExistsDuplicatedName(RepositoryCategoriaJPA repositoryCategoriaJPA) {
-        return repositoryCategoriaJPA.findFirstCategoriaByNome(nome);
-    }
-
-    public Categoria verifyIfCategoriaExists(RepositoryCategoriaJPA repositoryCategoriaJPA) {
-         return repositoryCategoriaJPA.findFirstCategoriaByNome(nome)
-                 .orElseThrow(() -> {throw new IllegalArgumentException();});
+    private void verifyIfExistsDuplicatedName(RepositoryCategoriaJPA repositoryCategoriaJPA) {
+        repositoryCategoriaJPA.findFirstCategoriaByNome(nome)
+                .ifPresent(e->{throw new EntityExistsException("Categoria already exists!");});
     }
 
     public String getNome() {

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.persistence.EntityExistsException;
 import java.security.InvalidParameterException;
 
 @RestControllerAdvice
@@ -26,7 +27,6 @@ public class Advice {
     }
 
     //Tratar validação de campo invalido na entidade:
-    // {Autor(email duplicado), Categoria(nome duplicado), Livro(titulo duplicado)}
     @ExceptionHandler({EntityException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RespostaErro invalidEntityField(EntityException e){
@@ -38,5 +38,12 @@ public class Advice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public RespostaErro bookDoesntExists(InvalidParameterException e){
         return new RespostaErro(e.getMessage(), HttpStatus.NOT_FOUND.value());
+    }
+
+    //Entidades ja existentes
+    @ExceptionHandler({EntityExistsException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RespostaErro entityAlreadyExists(EntityExistsException e){
+        return new RespostaErro(e.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
 }

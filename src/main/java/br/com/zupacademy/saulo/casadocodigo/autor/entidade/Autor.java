@@ -19,6 +19,11 @@ import java.util.regex.Pattern;
 @Entity
 public class Autor {
 
+    public static Autor verifyIfAutorExists(RepositoryAutorJPA repositoryAutorJPA, final String nome) {
+        return repositoryAutorJPA.findAutorByNome(nome)
+                .orElseThrow(() -> {throw new IllegalArgumentException("Autor não existe!");});
+    }
+
     private static final String EMAIL_REGEX_ISO = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
     private static final Pattern pattern = Pattern.compile(EMAIL_REGEX_ISO);
 
@@ -26,6 +31,7 @@ public class Autor {
         if(email.trim().equals("")) return false;
         return pattern.matcher(email).find();
     }
+
     private Autor(){}
 
     public Autor(final String nome){
@@ -63,18 +69,13 @@ public class Autor {
     private LocalDateTime dataDeCriacao = LocalDateTime.now();
 
     public Autor cadastrar(final RepositoryAutorJPA repositoryAutorJPA){
-        verifyIfExistsDuplicatedEmail(repositoryAutorJPA)
-                .ifPresent(e->{throw new EntityException("Não é possivel salvar autores com email duplicado!");});
+        verifyIfEmailIsUnique(repositoryAutorJPA);
         return repositoryAutorJPA.save(this);
     }
 
-    private Optional<Autor> verifyIfExistsDuplicatedEmail(RepositoryAutorJPA repositoryAutorJPA){
-        return repositoryAutorJPA.findFirstAutorByEmail(email);
-    }
-
-    public Autor verifyIfAutorExists(RepositoryAutorJPA repositoryAutorJPA) {
-        return repositoryAutorJPA.findAutorByNome(nome)
-                .orElseThrow(() -> {throw new IllegalArgumentException();});
+    private void verifyIfEmailIsUnique(RepositoryAutorJPA repositoryAutorJPA){
+        repositoryAutorJPA.findFirstAutorByEmail(email)
+                .ifPresent(e->{throw new EntityExistsException("Não é possivel salvar autores com email duplicado!");});
     }
 
     public String getNome() {
